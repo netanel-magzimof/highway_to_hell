@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CreateFloorAtHeight(0);
+        CreateFloorAtHeight(-1);
+        CreateFloorAtHeight(9);
+        CreateFloorAtHeight(19);
     }
 
     // Update is called once per frame
