@@ -155,6 +155,7 @@ MonoBehaviour:
   tileTemplates:
   - {fileID: 919132149155446097, guid: 99b8513113f26424caa876a29ecb1911, type: 3}
   - {fileID: 919132149155446097, guid: cca42a5dcf6df8d479a4030e21cde29b, type: 3}
+  - {fileID: 919132149155446097, guid: 4bb61e4efabae0948b6ce3f36b54ac8f, type: 3}
 --- !u!4 &502250294
 Transform:
   m_ObjectHideFlags: 0
