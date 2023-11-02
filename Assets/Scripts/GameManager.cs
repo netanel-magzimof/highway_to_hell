@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject[] tileTemplates; 
+    public GameObject[] tileTemplates;
+    private static GameManager _singleton;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -14,11 +18,12 @@ public class GameManager : MonoBehaviour
         CreateFloorAtHeight(19);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        if (!_singleton) _singleton = this;
+        else Destroy(gameObject); 
     }
+    
 
     private void CreateFloorAtHeight(float height)
     {
@@ -36,4 +41,15 @@ public class GameManager : MonoBehaviour
             } 
         }
     }
+
+    public static GameManager Singleton()
+    {
+        if (!_singleton)
+        {
+            _singleton = new GameManager();
+        }
+        return _singleton;
+    }
+    
+    
 }

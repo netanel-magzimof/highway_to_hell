@@ -18,15 +18,13 @@ public class PlayerMovement : MonoBehaviour
 
     
 
-    private PlayerInputActions _playerInputActions;
+    public PlayerInputActions _playerInputActions;
     // Start is called before the first frame update
 
     private void FixedUpdate()
     {
-        if (isDuringDash)
-        {
-            return;
-        }
+        if (isDuringDash) return;
+        
         
         Vector2 inputVec = _playerInputActions.Player.Movement.ReadValue<Vector2>();
         if (!inputVec.Equals(Vector2.zero))
@@ -35,6 +33,10 @@ public class PlayerMovement : MonoBehaviour
             Quaternion toRotation = Quaternion.LookRotation(new Vector3(inputVec.x, 0, inputVec.y), Vector3.up);
             transform.rotation =
                 Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.fixedTime);
+        }
+        else
+        {
+            _physics.velocity = new Vector3(0, _physics.velocity.y , 0);
         }
     }
 
@@ -47,7 +49,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
         _physics = GetComponent<Rigidbody>();
         _playerInputActions = new PlayerInputActions();
@@ -56,7 +58,6 @@ public class PlayerMovement : MonoBehaviour
         _playerInputActions.UI.Submit.performed += Submit;
         isDuringDash = false;
         canDash = true;
-        // _playerInputActions.Player.Movement.performed += MovementPerformed;
     }
 
      
@@ -84,7 +85,6 @@ public class PlayerMovement : MonoBehaviour
             
         // }
         yield return new WaitForSeconds(dashDuration);
-        Debug.Log("finished Dash");
         isDuringDash = false;
         _physics.velocity = new Vector3(0, _physics.velocity.y, 0);
         yield return new WaitForSeconds(dashCooldown);
@@ -94,6 +94,6 @@ public class PlayerMovement : MonoBehaviour
 
     public void Submit(InputAction.CallbackContext context)
     {
-        Debug.Log("Submit");
+        
     }
 }
