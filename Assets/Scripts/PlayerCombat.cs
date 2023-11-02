@@ -77,8 +77,8 @@ public class PlayerCombat : MonoBehaviour
     }
     
 
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawSphere(attackPoint.position,attackRange);
-    }
+    // private void OnDrawGizmosSelected()
+    // {
+        // Gizmos.DrawSphere(attackPoint.position,attackRange);
+    // }
 }
