@@ -25,7 +25,7 @@ public class TileBehaviour : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(ShakeAndFallCoroutine());
+        // StartCoroutine(ShakeAndFallCoroutine());
         _physics = GetComponent<Rigidbody>();
         _physics.useGravity = false;
     }

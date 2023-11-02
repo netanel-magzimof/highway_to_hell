@@ -7,12 +7,19 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject[] tileTemplates;
+    
+    [SerializeField] private TileBehaviour[] tileTemplates;
+
+    [SerializeField] private int numFloors = 3;
+    [SerializeField] private int FloorSizeInTiles = 5;
+    [SerializeField] private int HeightDiffBetweenFloors = 10;
     private static GameManager _singleton;
+    // private 
     
     // Start is called before the first frame update
     void Start()
     {
+        
         CreateFloorAtHeight(-1);
         CreateFloorAtHeight(9);
         CreateFloorAtHeight(19);
@@ -31,7 +38,7 @@ public class GameManager : MonoBehaviour
         {
             for (int j = -2; j < 3; j++)
             {
-                GameObject curTile = Instantiate(tileTemplates[Random.Range(0,tileTemplates.Length)]);
+                GameObject curTile = Instantiate(tileTemplates[Random.Range(0,tileTemplates.Length)].gameObject);
                 Vector3 curPos = new Vector3(i * 2.1f, height, j * 2.1f);
                 curTile.transform.position = curPos;
                 Vector3 eulerAngles = curTile.transform.eulerAngles;
