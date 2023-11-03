@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         // while (timeLeft > 0)
         // {
             Vector3 direction = transform.forward * dashSpeed;
+            direction.y = 0;
             // direction.y = _physics.velocity.y;
             _physics.AddForce(direction, ForceMode.VelocityChange);
             // timeLeft -= Time.deltaTime;
@@ -86,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
         // }
         yield return new WaitForSeconds(dashDuration);
         isDuringDash = false;
-        _physics.velocity = new Vector3(0, _physics.velocity.y, 0);
+        _physics.velocity = Vector3.zero;
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
