@@ -24,10 +24,12 @@ public class PlayerCombat : MonoBehaviour
     private float lastAttackTime, nextAttackTime;
     private float _health;
     private PlayerInputActions _playerInputActions;
+    private Animator _animator;
     
     private void Start()
     {
         // _health = FullHealth;
+        _animator = GetComponent<Animator>();
         curComboAttack = 0;
         _playerInputActions = GetComponent<PlayerMovement>()._playerInputActions;
         _playerInputActions.Player.Attack.performed += Attack;
@@ -43,6 +45,7 @@ public class PlayerCombat : MonoBehaviour
             curComboAttack = 0;
             //TODO change animation to idle no attack
         }
+        
         
     }
 
@@ -60,6 +63,8 @@ public class PlayerCombat : MonoBehaviour
 
             curComboAttack++;
             //TODO play right combo attack
+            _animator.SetTrigger("Attack");
+            _animator.SetInteger("ComboAttack", curComboAttack);
             Debug.Log("Combo attack number " + curComboAttack);
             if (curComboAttack == ComboLength)
             {

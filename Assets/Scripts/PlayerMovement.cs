@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashCooldown = 1.3f;
     
     private bool isDuringDash, canDash;
+    private Animator _animator;
     
 
     
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
         Vector2 inputVec = _playerInputActions.Player.Movement.ReadValue<Vector2>();
         if (!inputVec.Equals(Vector2.zero))
         {
+            _animator.SetBool("Run", true);
             _physics.velocity = new Vector3(inputVec.x* movementSpeed, _physics.velocity.y , inputVec.y* movementSpeed);
             Quaternion toRotation = Quaternion.LookRotation(new Vector3(inputVec.x, 0, inputVec.y), Vector3.up);
             transform.rotation =
@@ -36,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            _animator.SetBool("Run", false);
             _physics.velocity = new Vector3(0, _physics.velocity.y , 0);
         }
     }
@@ -51,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
+        _animator = GetComponent<Animator>();
         _physics = GetComponent<Rigidbody>();
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
