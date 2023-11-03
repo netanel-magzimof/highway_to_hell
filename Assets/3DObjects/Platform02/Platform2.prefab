@@ -52,6 +52,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Platform2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cca42a5dcf6df8d479a4030e21cde29b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5014110743285337792, guid: cca42a5dcf6df8d479a4030e21cde29b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -90,7 +98,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 0.3, z: 2}
+  m_Size: {x: 2.2, y: 0.3, z: 2.2}
   m_Center: {x: 0, y: -0.15, z: 0}
 --- !u!114 &-8729450976554590529
 MonoBehaviour:
