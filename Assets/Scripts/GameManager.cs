@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
         new FloorBehaviour(9, playerPos);
         new FloorBehaviour(19, playerPos);
         // CreateFloorAtHeight(9);
-        // CreateFloorAtHeight(19);
+        CreateFloorAtHeight(19);
     }
 
     private void Awake()
