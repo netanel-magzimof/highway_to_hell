@@ -8,20 +8,24 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     
-    [SerializeField] private TileBehaviour[] tileTemplates;
+    public TileBehaviour[] tileTemplates;
 
     [SerializeField] private int numFloors = 3;
     [SerializeField] private int FloorSizeInTiles = 5;
     [SerializeField] private int HeightDiffBetweenFloors = 10;
+    [SerializeField] private Transform playerPos;
     private static GameManager _singleton;
     // private 
     
     // Start is called before the first frame update
     void Start()
     {
-        CreateFloorAtHeight(-1);
-        CreateFloorAtHeight(9);
-        CreateFloorAtHeight(19);
+        // CreateFloorAtHeight(-1);
+        new FloorBehaviour(-1, playerPos);
+        new FloorBehaviour(9, playerPos);
+        new FloorBehaviour(19, playerPos);
+        // CreateFloorAtHeight(9);
+        // CreateFloorAtHeight(19);
     }
 
     private void Awake()

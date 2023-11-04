@@ -19,7 +19,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float attackForce = 2;
     // [SerializeField] private float FullHealth = 100;
 
-    [Header("Combo Stats")] 
+    [Header("Combo Stats")]
     [SerializeField] private int ComboLength = 3;
     [SerializeField] private float AttackCooldown = 0.3f;
     [SerializeField] private float AfterComboCooldow = 0.7f;
