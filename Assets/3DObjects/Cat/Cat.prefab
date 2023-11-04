@@ -203,6 +203,9 @@ MonoBehaviour:
   movementSpeed: 5
   rotationSpeed: 5
   dashCooldown: 1.3
+  isDuringDash: 0
+  canDash: 0
+  isDuringAttack: 0
 --- !u!114 &7402887969097807171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,12 +218,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bdd9c8970a936141a90c6dca7ee8b0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerMovement: {fileID: 2648509904981483979}
   attackPoint: {fileID: 6315458044007002901}
   attackRange: 0.7
   attackDamage: 50
   attackedLayers:
     serializedVersion: 2
     m_Bits: 8
+  attackForce: 2
   ComboLength: 3
   AttackCooldown: 0.3
   AfterComboCooldow: 0.7

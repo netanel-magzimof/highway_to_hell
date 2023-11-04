@@ -13,8 +13,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rotationSpeed = 5;
     [SerializeField] private float dashCooldown = 1.3f;
     
-    private bool isDuringDash, canDash;
+    public bool isDuringDash, canDash, isDuringAttack;
     private Animator _animator;
+    
     
 
     
@@ -24,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isDuringDash) return;
+        if (isDuringDash || isDuringAttack) return;
         
         
         Vector2 inputVec = _playerInputActions.Player.Movement.ReadValue<Vector2>();
