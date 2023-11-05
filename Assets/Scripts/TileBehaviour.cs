@@ -18,9 +18,7 @@ public class TileBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        startingPos.x = transform.position.x;
-        startingPos.y = transform.position.z;
-        _tileState = TileState.Default;
+        
     }
 
     private void Start()
@@ -28,6 +26,9 @@ public class TileBehaviour : MonoBehaviour
         // StartCoroutine(ShakeAndFallCoroutine());
         _physics = GetComponent<Rigidbody>();
         _physics.useGravity = false;
+        startingPos.x = transform.position.x;
+        startingPos.y = transform.position.z;
+        _tileState = TileState.Default;
     }
 
     // Update is called once per frame
@@ -47,6 +48,7 @@ public class TileBehaviour : MonoBehaviour
 
     private void Shake()
     {
+        print("Shaking");
         Vector3 pos = transform.position;
         if (_tileState == TileState.Shaking)
         {

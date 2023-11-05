@@ -10,41 +10,50 @@ public class FloorBehaviour : MonoBehaviour
     private bool[] _availableTiles;
     private Coroutine fallingCoroutine;
 
-    public FloorBehaviour(float height, Transform playerPos)
-    {
-        _height = height;
-        _playerPos = playerPos;
-        _tiles = new TileBehaviour[25];
-        _availableTiles = new bool[25];
-    }
+    // public FloorBehaviour(float height, Transform playerPos)
+    // {
+    //     _height = height;
+    //     _playerPos = playerPos;
+    //     _tiles = new TileBehaviour[25];
+    //     _availableTiles = new bool[25];
+    // }
     // Start is called before the first frame update
     void Start()
     {
+        _playerPos = GameManager.Singleton().playerPos;
+        _tiles = new TileBehaviour[25];
+        _availableTiles = new bool[25];
+        transform.eulerAngles = new Vector3(0, 45, 0);
         int counter = 0;
         for (int i = -2; i < 3; i++)
         {
             for (int j = -2; j < 3; j++)
             {
                 GameObject curTile = Instantiate(GameManager.Singleton().tileTemplates[Random.Range(0,GameManager.Singleton().tileTemplates.Length)].gameObject);
-                Vector3 curPos = new Vector3(i * 2.1f, _height, j * 2.1f);
-                _tiles[counter++] = curTile.GetComponent<TileBehaviour>();
-                _availableTiles[counter++] = true;
+                Vector3 curPos = new Vector3(i * 2.1f, transform.position.y, j * 2.1f);
                 curTile.transform.position = curPos;
+                _tiles[counter] = curTile.GetComponent<TileBehaviour>();
+                _availableTiles[counter++] = true;
                 Vector3 eulerAngles = curTile.transform.eulerAngles;
                 eulerAngles.y = Random.Range(0, 4)*90;
                 curTile.transform.eulerAngles = eulerAngles;
+                curTile.transform.parent = transform;
             }   
         }
+        transform.eulerAngles = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Mathf.Abs(_playerPos.position.y - _height) < 4f && fallingCoroutine == null)
+        if (Mathf.Abs(_playerPos.position.y - transform.position.y) < 4f)
         {
-            fallingCoroutine = StartCoroutine(TilesFalling());
+            if (fallingCoroutine == null)
+            {
+                fallingCoroutine = StartCoroutine(TilesFalling());
+            }
         }
-        else
+        else if(fallingCoroutine != null)
         {
             StopCoroutine(fallingCoroutine);
         }
@@ -52,15 +61,22 @@ public class FloorBehaviour : MonoBehaviour
 
     private IEnumerator TilesFalling()
     {
-        for (int i = 0; i < _tiles.Length; i++)
+        while (true)
         {
-            if (_availableTiles[i])
+            yield return new WaitForSeconds(3);
+            List<int> availableTiles = new List<int>();
+            for (int i = 0; i < _tiles.Length; i++)
             {
-                _availableTiles[i] = false;
-                _tiles[i].ShakeAndFall();
+                if (_availableTiles[i])
+                {
+                    availableTiles.Add(i);
+                }
             }
-        }
 
-        yield return null;
+            int tileToShake = availableTiles[Random.Range(0,availableTiles.Count)];
+            _tiles[tileToShake].ShakeAndFall();
+            _availableTiles[tileToShake] = false;
+        }
+        
     }
 }

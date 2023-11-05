@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int numFloors = 3;
     [SerializeField] private int FloorSizeInTiles = 5;
     [SerializeField] private int HeightDiffBetweenFloors = 10;
-    [SerializeField] private Transform playerPos;
+    [SerializeField] private FloorBehaviour _floorBehaviour;
+    public Transform playerPos;
     private static GameManager _singleton;
     // private 
     
@@ -21,11 +22,12 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // CreateFloorAtHeight(-1);
-        new FloorBehaviour(-1, playerPos);
-        new FloorBehaviour(9, playerPos);
-        new FloorBehaviour(19, playerPos);
+        // new FloorBehaviour(-1, playerPos);
+        // new FloorBehaviour(9, playerPos);
+        // new FloorBehaviour(19, playerPos);
         // CreateFloorAtHeight(9);
-        CreateFloorAtHeight(19);
+        // CreateFloorAtHeight(19);
+        Instantiate(_floorBehaviour, Vector3.up*19,Quaternion.identity);
     }
 
     private void Awake()
