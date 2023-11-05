@@ -73,6 +73,7 @@ public class TileBehaviour : MonoBehaviour
     private IEnumerator Fall()
     {
         _physics.useGravity = true;
+        _physics.isKinematic = false;
         yield return new WaitForSeconds(0.7f);
         gameObject.SetActive(false);
     }
