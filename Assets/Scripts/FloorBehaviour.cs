@@ -20,6 +20,7 @@ public class FloorBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _height = transform.position.y;
         _playerPos = GameManager.Singleton().playerPos;
         _tiles = new TileBehaviour[25];
         _availableTiles = new bool[25];
@@ -30,7 +31,7 @@ public class FloorBehaviour : MonoBehaviour
             for (int j = -2; j < 3; j++)
             {
                 GameObject curTile = Instantiate(GameManager.Singleton().tileTemplates[Random.Range(0,GameManager.Singleton().tileTemplates.Length)].gameObject);
-                Vector3 curPos = new Vector3(i * 2.1f, transform.position.y, j * 2.1f);
+                Vector3 curPos = new Vector3(i * 2.1f, _height, j * 2.1f);
                 curTile.transform.position = curPos;
                 _tiles[counter] = curTile.GetComponent<TileBehaviour>();
                 _availableTiles[counter++] = true;
@@ -46,7 +47,7 @@ public class FloorBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Mathf.Abs(_playerPos.position.y - transform.position.y) < 4f)
+        if (Mathf.Abs(_playerPos.position.y - _height) < 4f)
         {
             if (fallingCoroutine == null)
             {
@@ -72,7 +73,6 @@ public class FloorBehaviour : MonoBehaviour
                     availableTiles.Add(i);
                 }
             }
-
             int tileToShake = availableTiles[Random.Range(0,availableTiles.Count)];
             _tiles[tileToShake].ShakeAndFall();
             _availableTiles[tileToShake] = false;
