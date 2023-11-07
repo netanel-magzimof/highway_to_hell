@@ -51,6 +51,7 @@ public class PlayerCombat : MonoBehaviour
             playerMovement.isDuringAttack = false;
             Debug.Log("stopped mid combo");
             curComboAttack = 0;
+            _animator.SetInteger("ComboAttack", curComboAttack);
             //TODO change animation to idle no attack
         }
         

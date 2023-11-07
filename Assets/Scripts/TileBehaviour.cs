@@ -48,7 +48,6 @@ public class TileBehaviour : MonoBehaviour
 
     private void Shake()
     {
-        print("Shaking");
         Vector3 pos = transform.position;
         if (_tileState == TileState.Shaking)
         {
