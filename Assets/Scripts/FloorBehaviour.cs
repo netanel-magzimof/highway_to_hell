@@ -49,7 +49,7 @@ public class FloorBehaviour : MonoBehaviour
     {
         if (Mathf.Abs(_playerPos.position.y - _height) < 4f)
         {
-            if (fallingCoroutine == null)
+            if (fallingCoroutine == null && GameManager.Singleton().ShouldPlatformFall)
             {
                 fallingCoroutine = StartCoroutine(TilesFalling());
             }

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 {
     
     public TileBehaviour[] tileTemplates;
+    public bool ShouldPlatformFall = true;
 
     [SerializeField] private int numFloors = 3;
     [SerializeField] private int FloorSizeInTiles = 5;
