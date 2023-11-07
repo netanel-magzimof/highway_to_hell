@@ -166,6 +166,7 @@ MonoBehaviour:
   HeightDiffBetweenFloors: 10
   _floorBehaviour: {fileID: 4832976628377853984, guid: 764fc0587d852f04cb6a779dee31a8fa, type: 3}
   playerPos: {fileID: 500943696}
+  ShouldPlatformFall: 0
 --- !u!4 &502250294
 Transform:
   m_ObjectHideFlags: 0
@@ -797,7 +798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7402887969097807171, guid: 5ca8f112544393e4d83076e650e2e9e9, type: 3}
       propertyPath: AttackCooldown
-      value: 0.05
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

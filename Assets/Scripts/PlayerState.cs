@@ -1,30 +1,42 @@
 using System.Linq;
 
-public static class PlayerStateManager
+public class PlayerStateManager
 {
     #region Fields
 
     private static readonly PlayerState[] _runRestrictions = new[] { PlayerState.Attack, PlayerState.Dash, PlayerState.Fall };
     private static readonly PlayerState[] _dashRestrictions = new[] { PlayerState.Attack, PlayerState.Fall};
     private static readonly PlayerState[] _attackRestrictions = new[] { PlayerState.Dash, PlayerState.Fall};
+
+    private PlayerState _playerState;
     
     #endregion
 
     #region Methods
 
-    public static bool CanRunFromState(PlayerState playerState)
+    public bool CanRunFromState()
     {
-        return !_runRestrictions.Contains(playerState);
+        return !_runRestrictions.Contains(_playerState);
     }
     
-    public static bool CanDashFromState(PlayerState playerState)
+    public bool CanDashFromState()
     {
-        return !_dashRestrictions.Contains(playerState);
+        return !_dashRestrictions.Contains(_playerState);
     }
     
-    public static bool CanAttackFromState(PlayerState playerState)
+    public bool CanAttackFromState()
     {
-        return !_attackRestrictions.Contains(playerState);
+        return !_attackRestrictions.Contains(_playerState);
+    }
+
+    public PlayerState GetPlayerState()
+    {
+        return _playerState;
+    }
+
+    public void SetPlayerState(PlayerState playerState)
+    {
+        _playerState = playerState;
     }
     
     #endregion

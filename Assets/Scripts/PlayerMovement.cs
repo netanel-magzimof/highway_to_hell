@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
 {
 
     #region Inspector
-    public PlayerState playerState;
+    public PlayerStateManager playerStateManager;
 
     [Header("Dash Stats")]
     [SerializeField] private float dashSpeed = 30;
@@ -24,10 +24,12 @@ public class PlayerMovement : MonoBehaviour
 
 
     #region Fields
-    public bool isDuringDash, canDash, isDuringAttack;
+    public bool canDash, isDuringAttack;
     private Rigidbody _physics;
     private Animator _animator;
     public PlayerInputActions _playerInputActions;
+    private static readonly int RunAnimatorIndex = Animator.StringToHash("Run");
+
     #endregion
 
 
@@ -40,11 +42,13 @@ public class PlayerMovement : MonoBehaviour
         _playerInputActions = new PlayerInputActions();
         _playerInputActions.Player.Enable();
         _playerInputActions.Player.Dash.performed += Dash;
-        isDuringDash = false;
+        playerStateManager = new PlayerStateManager();
+        playerStateManager.SetPlayerState(PlayerState.Idle);
         canDash = true;
     }
     private void Update()
     {
+        //TODO change this to a different way to switch to ui mode
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             _playerInputActions.Player.Disable();
@@ -53,13 +57,13 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (isDuringDash || isDuringAttack) return;
-        
+        if (!playerStateManager.CanRunFromState()) return;
         
         Vector2 inputVec = _playerInputActions.Player.Movement.ReadValue<Vector2>();
         if (!inputVec.Equals(Vector2.zero))
         {
-            _animator.SetBool("Run", true);
+            playerStateManager.SetPlayerState(PlayerState.Run);
+            _animator.SetBool(RunAnimatorIndex, true);
             _physics.velocity = new Vector3(inputVec.x* movementSpeed, _physics.velocity.y , inputVec.y* movementSpeed);
             Quaternion toRotation = Quaternion.LookRotation(new Vector3(inputVec.x, 0, inputVec.y), Vector3.up);
             transform.rotation =
@@ -67,7 +71,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            _animator.SetBool("Run", false);
+            playerStateManager.SetPlayerState(PlayerState.Idle);
+            _animator.SetBool(RunAnimatorIndex, false);
             _physics.velocity = new Vector3(0, _physics.velocity.y , 0);
         }
     }
@@ -80,30 +85,21 @@ public class PlayerMovement : MonoBehaviour
 
     public void Dash(InputAction.CallbackContext context)
     {
-        if (context.performed && canDash)
+        if (context.performed && canDash && playerStateManager.CanDashFromState())
         {
-            isDuringDash = true;
+            playerStateManager.SetPlayerState(PlayerState.Dash);
             canDash = false;
             StartCoroutine(PerformDash());
-            // _physics.AddForce(Vector3.up*jumpSpeed, ForceMode.Impulse);
         }
     }
 
     private IEnumerator PerformDash()
     {
-        float timeLeft = dashDuration;
-        // while (timeLeft > 0)
-        // {
         Vector3 direction = transform.forward * dashSpeed;
         direction.y = 0;
-        // direction.y = _physics.velocity.y;
         _physics.AddForce(direction, ForceMode.VelocityChange);
-        // timeLeft -= Time.deltaTime;
-        // yield return null;
-            
-        // }
         yield return new WaitForSeconds(dashDuration);
-        isDuringDash = false;
+        playerStateManager.SetPlayerState(PlayerState.Idle);
         _physics.velocity = Vector3.zero;
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;

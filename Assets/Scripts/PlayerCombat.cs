@@ -43,6 +43,8 @@ public class PlayerCombat : MonoBehaviour
     private Rigidbody _physics;
     private static readonly int ComboAttackAnimatorIndex = Animator.StringToHash("ComboAttack");
     private static readonly int AttackAnimatorIndex = Animator.StringToHash("Attack");
+    public PlayerStateManager playerStateManager;
+    public PlayerState _playerState;
 
     #endregion
     
@@ -58,15 +60,18 @@ public class PlayerCombat : MonoBehaviour
         _playerInputActions.Player.Attack.performed += Attack;
         lastAttackTime = 0;
         nextAttackTime = 0;
+        playerStateManager = GetComponent<PlayerMovement>().playerStateManager;
     }
 
     private void Update()
     {
+        _playerState = playerStateManager.GetPlayerState();
         if (curComboAttack > 0 && Time.time > lastAttackTime + MidComboResetTime)
         {
             playerMovement.isDuringAttack = false;
             curComboAttack = 0;
             _animator.SetInteger(ComboAttackAnimatorIndex, curComboAttack);
+            playerStateManager.SetPlayerState(PlayerState.Idle);
         }
     }
         
@@ -77,11 +82,11 @@ public class PlayerCombat : MonoBehaviour
                
     private void Attack(InputAction.CallbackContext context)
     {
-        if (Time.time >= nextAttackTime && !playerMovement.isDuringDash)
+        if (Time.time >= nextAttackTime && playerStateManager.CanAttackFromState())
         {
-            playerMovement.isDuringAttack = true;
+            playerStateManager.SetPlayerState(PlayerState.Attack);
             _physics.velocity = transform.forward * attackForce;
-            //start attack animation
+
             Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, attackedLayers);
             foreach (Collider enemy in hitEnemies)
             {
@@ -89,13 +94,15 @@ public class PlayerCombat : MonoBehaviour
             }
 
             curComboAttack++;
+            
+            //start attack animation
             _animator.SetTrigger(AttackAnimatorIndex);
             _animator.SetInteger(ComboAttackAnimatorIndex, curComboAttack);
             
             if (curComboAttack == ComboLength)
             {
+                playerStateManager.SetPlayerState(PlayerState.Idle);
                 nextAttackTime = Time.time + AfterComboCooldow;
-                curComboAttack = 0;
                 playerMovement.isDuringAttack = false;
             }
             else
