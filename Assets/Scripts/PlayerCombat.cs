@@ -9,33 +9,49 @@ using UnityEngine.UI;
 public class PlayerCombat : MonoBehaviour
 {
     
+    
+    #region Inspector
+            
     [SerializeField] private  PlayerMovement playerMovement;
-
+    
     [Header("Attack Stats")]
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float attackRange = 3;
     [SerializeField] private float attackDamage = 50;
     [SerializeField] private LayerMask attackedLayers;
     [SerializeField] private float attackForce = 2;
-    // [SerializeField] private float FullHealth = 100;
-
+    
     [Header("Combo Stats")]
     [SerializeField] private int ComboLength = 3;
     [SerializeField] private float AttackCooldown = 0.3f;
     [SerializeField] private float AfterComboCooldow = 0.7f;
     [SerializeField] private float MidComboResetTime = 1;
 
+    [Header("Debug")] 
+    [SerializeField] private bool DrawAttackGizmo;
+    
+    #endregion
+    
+    
+    #region Fields
+        
     private int curComboAttack;
     private float lastAttackTime, nextAttackTime;
     private float _health;
     private PlayerInputActions _playerInputActions;
     private Animator _animator;
     private Rigidbody _physics;
+    private static readonly int ComboAttackAnimatorIndex = Animator.StringToHash("ComboAttack");
+    private static readonly int AttackAnimatorIndex = Animator.StringToHash("Attack");
+
+    #endregion
+    
+    
+    #region MonoBehaviour
     
     private void Start()
     {
         _physics = GetComponent<Rigidbody>();
-        // _health = FullHealth;
         _animator = GetComponent<Animator>();
         curComboAttack = 0;
         _playerInputActions = GetComponent<PlayerMovement>()._playerInputActions;
@@ -49,15 +65,16 @@ public class PlayerCombat : MonoBehaviour
         if (curComboAttack > 0 && Time.time > lastAttackTime + MidComboResetTime)
         {
             playerMovement.isDuringAttack = false;
-            Debug.Log("stopped mid combo");
             curComboAttack = 0;
-            _animator.SetInteger("ComboAttack", curComboAttack);
-            //TODO change animation to idle no attack
+            _animator.SetInteger(ComboAttackAnimatorIndex, curComboAttack);
         }
-        
-        
     }
-
+        
+    #endregion
+    
+    
+    #region Methods
+               
     private void Attack(InputAction.CallbackContext context)
     {
         if (Time.time >= nextAttackTime && !playerMovement.isDuringDash)
@@ -72,10 +89,9 @@ public class PlayerCombat : MonoBehaviour
             }
 
             curComboAttack++;
-            _animator.SetTrigger("Attack");
-            _animator.SetInteger("ComboAttack", curComboAttack);
+            _animator.SetTrigger(AttackAnimatorIndex);
+            _animator.SetInteger(ComboAttackAnimatorIndex, curComboAttack);
             
-            Debug.Log("Combo attack number " + curComboAttack);
             if (curComboAttack == ComboLength)
             {
                 nextAttackTime = Time.time + AfterComboCooldow;
@@ -92,9 +108,28 @@ public class PlayerCombat : MonoBehaviour
         
     }
     
+    private void OnDrawGizmosSelected()
+    {
+        if (DrawAttackGizmo)
+        {
+            Gizmos.DrawSphere(attackPoint.position,attackRange);
+        }
+    }
+    
+    #endregion
 
-    // private void OnDrawGizmosSelected()
-    // {
-        // Gizmos.DrawSphere(attackPoint.position,attackRange);
-    // }
+    
+
+    
+
+    
+
+    
+    
+    
+
+    
+    
+
+    
 }

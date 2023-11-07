@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Magzimof;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using Random = UnityEngine.Random;
@@ -9,18 +10,27 @@ using Random = UnityEngine.Random;
     
 public class TileBehaviour : MonoBehaviour
 {
-    enum TileState { Default, Shaking, Falling }
+    
+    #region Inspector
+    
+    [Header("Shaking Stats")]
     [SerializeField] private float ShakeTime = 1;
-
+    
+    
+    #endregion
+    
+    
+    #region Fields
+        
     private TileState _tileState;
     private Vector2 startingPos;
     private Rigidbody _physics;
-    // Start is called before the first frame update
-    void Awake()
-    {
-        
-    }
-
+    
+    #endregion
+    
+    
+    #region MonoBehaviour
+    
     private void Start()
     {
         // StartCoroutine(ShakeAndFallCoroutine());
@@ -31,7 +41,6 @@ public class TileBehaviour : MonoBehaviour
         _tileState = TileState.Default;
     }
 
-    // Update is called once per frame
     void Update()
     {
         switch (_tileState)
@@ -43,16 +52,20 @@ public class TileBehaviour : MonoBehaviour
                 StartCoroutine(Fall());
                 break;
         }
-        
     }
-
+        
+    #endregion
+    
+    
+    #region Methods
+              
     private void Shake()
     {
         Vector3 pos = transform.position;
         if (_tileState == TileState.Shaking)
         {
-            pos.x = startingPos.x + Mathf.Sin(Time.time*100)* (randomBoolean() ? 1 : -1) * 0.05f;
-            pos.z = startingPos.y + Mathf.Cos(Time.time*100) * (randomBoolean() ? 1 : -1) * 0.05f;
+            pos.x = startingPos.x + Mathf.Sin(Time.time*100)* (Util.randomBoolean() ? 1 : -1) * 0.05f;
+            pos.z = startingPos.y + Mathf.Cos(Time.time*100) * (Util.randomBoolean() ? 1 : -1) * 0.05f;
         }
         transform.position = pos;
     }
@@ -76,14 +89,10 @@ public class TileBehaviour : MonoBehaviour
         yield return new WaitForSeconds(0.7f);
         gameObject.SetActive(false);
     }
-
-    bool randomBoolean ()
-    {
-        if (Random.value >= 0.5)
-        {
-            return true;
-        }
-        return false;
-    }
+    
+    #endregion
+    
+    enum TileState { Default, Shaking, Falling }
+    
     
 }

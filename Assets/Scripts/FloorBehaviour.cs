@@ -4,28 +4,54 @@ using UnityEngine;
 
 public class FloorBehaviour : MonoBehaviour
 {
+    
+    #region Fields
+
     private Transform _playerPos;
     private float _height;
     private TileBehaviour[] _tiles;
     private bool[] _availableTiles;
     private Coroutine fallingCoroutine;
 
-    // public FloorBehaviour(float height, Transform playerPos)
-    // {
-    //     _height = height;
-    //     _playerPos = playerPos;
-    //     _tiles = new TileBehaviour[25];
-    //     _availableTiles = new bool[25];
-    // }
-    // Start is called before the first frame update
+    #endregion
+
+    
+    #region MonoBehaviour
     void Start()
     {
         _height = transform.position.y;
         _playerPos = GameManager.Singleton().playerPos;
+        transform.eulerAngles = new Vector3(0, 45, 0);
+        InstantiateTiles();
+        transform.eulerAngles = Vector3.zero;
+    }
+
+    
+
+    void Update()
+    {
+        if (Mathf.Abs(_playerPos.position.y - _height) < 4f)
+        {
+            if (fallingCoroutine == null && GameManager.Singleton().ShouldPlatformFall)
+            {
+                fallingCoroutine = StartCoroutine(TilesFalling());
+            }
+        }
+        else if(fallingCoroutine != null)
+        {
+            StopCoroutine(fallingCoroutine);
+        }
+    }
+    #endregion
+
+    
+    #region Methods
+
+    private void InstantiateTiles()
+    {
+        int counter = 0;
         _tiles = new TileBehaviour[25];
         _availableTiles = new bool[25];
-        transform.eulerAngles = new Vector3(0, 45, 0);
-        int counter = 0;
         for (int i = -2; i < 3; i++)
         {
             for (int j = -2; j < 3; j++)
@@ -41,25 +67,8 @@ public class FloorBehaviour : MonoBehaviour
                 curTile.transform.parent = transform;
             }   
         }
-        transform.eulerAngles = Vector3.zero;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Mathf.Abs(_playerPos.position.y - _height) < 4f)
-        {
-            if (fallingCoroutine == null && GameManager.Singleton().ShouldPlatformFall)
-            {
-                fallingCoroutine = StartCoroutine(TilesFalling());
-            }
-        }
-        else if(fallingCoroutine != null)
-        {
-            StopCoroutine(fallingCoroutine);
-        }
-    }
-
+    
     private IEnumerator TilesFalling()
     {
         while (true)
@@ -79,4 +88,7 @@ public class FloorBehaviour : MonoBehaviour
         }
         
     }
+
+    #endregion
+    
 }

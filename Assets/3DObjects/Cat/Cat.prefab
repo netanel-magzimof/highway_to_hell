@@ -204,11 +204,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb4e084dc6715146baa09f5b660c842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerState: 0
   dashSpeed: 30
   dashDuration: 0.1
+  dashCooldown: 1.3
   movementSpeed: 5
   rotationSpeed: 5
-  dashCooldown: 1.3
   isDuringDash: 0
   canDash: 0
   isDuringAttack: 0
