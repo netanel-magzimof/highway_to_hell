@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     #region Fields
-    public bool canDash, isDuringAttack;
+    public bool canDash;
     private Rigidbody _physics;
     private Animator _animator;
     public PlayerInputActions _playerInputActions;

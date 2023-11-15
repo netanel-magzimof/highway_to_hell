@@ -68,7 +68,7 @@ public class PlayerCombat : MonoBehaviour
         _playerState = playerStateManager.GetPlayerState();
         if (curComboAttack > 0 && Time.time > lastAttackTime + MidComboResetTime)
         {
-            playerMovement.isDuringAttack = false;
+            _animator.SetBool(AttackAnimatorIndex, false);
             curComboAttack = 0;
             _animator.SetInteger(ComboAttackAnimatorIndex, curComboAttack);
             playerStateManager.SetPlayerState(PlayerState.Idle);
@@ -96,14 +96,13 @@ public class PlayerCombat : MonoBehaviour
             curComboAttack++;
             
             //start attack animation
-            _animator.SetTrigger(AttackAnimatorIndex);
+            _animator.SetBool(AttackAnimatorIndex, true);
             _animator.SetInteger(ComboAttackAnimatorIndex, curComboAttack);
             
             if (curComboAttack == ComboLength)
             {
                 playerStateManager.SetPlayerState(PlayerState.Idle);
                 nextAttackTime = Time.time + AfterComboCooldow;
-                playerMovement.isDuringAttack = false;
             }
             else
             {
