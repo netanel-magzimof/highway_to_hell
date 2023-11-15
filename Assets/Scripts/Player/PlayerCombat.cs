@@ -90,7 +90,7 @@ public class PlayerCombat : MonoBehaviour
                
     private void Attack(InputAction.CallbackContext context)
     {
-        if (Time.time >= nextAttackTime && playerStateManager.CanAttackFromState())
+        if (Time.time >= nextAttackTime && playerStateManager.CanAttackFromState() && curComboAttack < 3)
         {
             playerStateManager.SetPlayerState(PlayerState.Attack);
             _physics.velocity = transform.forward * attackForce;
