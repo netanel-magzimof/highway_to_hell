@@ -20,6 +20,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float attackDamage = 50;
     [SerializeField] private LayerMask attackedLayers;
     [SerializeField] private float attackForce = 2;
+    [SerializeField, Range(0, 0.3f)] private float cantMoveAfterAttackTime = 0.15f;
     
     [Header("Combo Stats")]
     [SerializeField] private int ComboLength = 3;
@@ -34,7 +35,8 @@ public class PlayerCombat : MonoBehaviour
     
     
     #region Fields
-        
+
+    private float _nextCanMoveTime = 0;
     private int curComboAttack;
     private float lastAttackTime, nextAttackTime;
     private float _health;
@@ -73,6 +75,12 @@ public class PlayerCombat : MonoBehaviour
             _animator.SetInteger(ComboAttackAnimatorIndex, curComboAttack);
             playerStateManager.SetPlayerState(PlayerState.Idle);
         }
+        if (_nextCanMoveTime < Time.time)
+        {
+            _animator.SetBool(AttackAnimatorIndex, false);
+            playerStateManager.SetPlayerState(PlayerState.Idle);
+        
+        }
     }
         
     #endregion
@@ -94,9 +102,22 @@ public class PlayerCombat : MonoBehaviour
             }
 
             curComboAttack++;
+            _nextCanMoveTime = Time.time + cantMoveAfterAttackTime;
             
             //start attack animation
             _animator.SetBool(AttackAnimatorIndex, true);
+            switch (curComboAttack)
+            {
+                case 1:
+                    _animator.Play("Attack1");
+                    break;
+                case 2:
+                    _animator.Play("Attack2");
+                    break;
+                case 3:
+                    _animator.Play("Attack3");
+                    break;
+            }
             _animator.SetInteger(ComboAttackAnimatorIndex, curComboAttack);
             
             if (curComboAttack == ComboLength)

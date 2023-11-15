@@ -800,6 +800,10 @@ PrefabInstance:
       propertyPath: AttackCooldown
       value: 0.2
       objectReference: {fileID: 0}
+    - target: {fileID: 7402887969097807171, guid: 5ca8f112544393e4d83076e650e2e9e9, type: 3}
+      propertyPath: cantMoveAfterAttackTime
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -12,6 +12,7 @@ public abstract class StateMachine<Estate> : MonoBehaviour where Estate : Enum
     protected Dictionary<Estate, BaseState<Estate>> States = new Dictionary<Estate, BaseState<Estate>>();
     protected BaseState<Estate> CurrentState;
     private bool _isTransitioningState = false;
+    
     #endregion
     
     
